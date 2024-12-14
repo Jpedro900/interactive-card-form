@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 type Props = {};
 
-const CardFront = (props: Props) => {
+const CardFront = ({}: Props) => {
   const { cardInfo } = useCardInfo();
 
   const cardNumber = cardInfo.cardNumber || "0000 0000 0000 0000"
