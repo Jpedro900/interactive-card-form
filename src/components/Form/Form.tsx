@@ -140,7 +140,7 @@ function Form({ setIsSubmitted }: Props) {
           </div>
         </div>
         <button
-          className={`bg-[#351347] text-white w-full rounded-lg h-14 ${
+          className={`bg-[#351347] text-white w-full rounded-lg h-14 hover:bg-[#1f1a2f] transition duration-300 ${
             isFormValid ? "" : "opacity-50 cursor-not-allowed"
           }`}
           type="submit"
