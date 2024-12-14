@@ -1,12 +1,13 @@
-import React , { useState } from "react";
 import cardback from "../../assets/images/bg-card-back.png";
+import { useCardInfo } from "../../hooks/CardInfoContext";
 
 type Props = {
 
 };
 
 function CardBack({}: Props) {
-  const [cvc, setCvc] = useState("000");
+  const { cardInfo } = useCardInfo();
+  const cvc = cardInfo.cardCvc || "000";
 
   return (
     <div className="absolute top-[15%] right-[5%] size-[75%] ">

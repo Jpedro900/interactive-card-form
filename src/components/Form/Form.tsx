@@ -1,33 +1,50 @@
 import React, { useState } from "react";
 import { useCardInfo } from "../../hooks/CardInfoContext";
 
-type Props = { 
-  setIsSubmitted: (isSubmitted: boolean) => void,
+type Props = {
+  setIsSubmitted: (isSubmitted: boolean) => void;
 };
 
-function Form({ setIsSubmitted,  }: Props) {
-  const [errors, setErrors] = useState({ cardHolder: false, cardNumber: false });
+function Form({ setIsSubmitted }: Props) {
+  const [errors, setErrors] = useState({
+    cardHolder: false,
+    cardNumber: false,
+  });
   const { cardInfo, setCardInfo } = useCardInfo();
 
-  const { cardHolder, cardNumber, cardExpireMM, cardExpireYY, cardCvc } = cardInfo;
+  const { cardHolder, cardNumber, cardExpireMM, cardExpireYY, cardCvc } =
+    cardInfo;
 
-  const isFormValid = cardHolder && cardNumber && cardExpireMM && cardExpireYY && cardCvc && !errors.cardNumber;
+  const isFormValid =
+    cardHolder &&
+    cardNumber &&
+    cardExpireMM &&
+    cardExpireYY &&
+    cardCvc &&
+    !errors.cardNumber;
 
-  const handleInputChange = ( e: React.ChangeEvent<HTMLInputElement>, field:string) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: string
+  ) => {
     let value = e.target.value;
-
-    if (field === "cardNumber") {
-      value = formatCardNumber(value);
-    }
 
     setCardInfo({
       ...cardInfo,
       [field]: value,
     });
-  }
+  };
 
-  const formatCardNumber = (value: string) => {
-    return value.replace(/\s?/g, '').replace(/(\d{4})/g, '$1 ').trim();
+  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/\D/g, "")
+    const formattedValue = rawValue
+      .slice(0, 16)
+      .replace(/(\d{4})(?=\d)/g, "$1 ")
+
+    setCardInfo({
+      ...cardInfo,
+      cardNumber: formattedValue, 
+    })
   };
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -43,10 +60,10 @@ function Form({ setIsSubmitted,  }: Props) {
     const newErrors = {
       cardHolder: !cardHolder,
       cardNumber: !/^\d{4} \d{4} \d{4} \d{4}$/.test(cardNumber),
-    }
+    };
     setErrors(newErrors);
     return !Object.values(newErrors).some((error) => error);
-  }
+  };
 
   return (
     <div className=" mt-24 px-6 h-[50%]">
@@ -70,13 +87,15 @@ function Form({ setIsSubmitted,  }: Props) {
             CARD NUMBER
           </label>
           <input
-            className={`input-field ${errors.cardNumber ? "border-red-500" : ""}`}
+            className={`input-field ${
+              errors.cardNumber ? "border-red-500" : ""
+            }`}
             name="formNumber"
             type="text"
             maxLength={19}
             placeholder="e.g 0000 0000 0000 0000"
             value={cardInfo.cardNumber}
-          onChange={(e) => handleInputChange(e, "cardNumber")}
+            onChange={handleCardNumberChange}
           />
         </div>
         <div className=" flex justify-between">

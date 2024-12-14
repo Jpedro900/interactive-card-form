@@ -1,13 +1,16 @@
-import React, { useState } from "react";
 import cardfront from "../../assets/images/bg-card-front.png";
 import cardlogo from "../../assets/images/card-logo.svg";
+import { useCardInfo } from "../../hooks/CardInfoContext";
 
 type Props = {};
 
 const CardFront = (props: Props) => {
-  const [cardNumber, setCardNumber] = useState("0000 0000 0000 0000");
-  const [cardHolder, setCardHolder] = useState("JANE APPLESEED");
-  const [cardExpire, setCardExpire] = useState("00/00");
+  const { cardInfo } = useCardInfo();
+
+  const cardNumber = cardInfo.cardNumber || "0000 0000 0000 0000"
+  const cardHolder = cardInfo.cardHolder || "JANE APPLESEED"
+  const cardExpire = cardInfo.cardExpireMM && cardInfo.cardExpireYY ? `${cardInfo.cardExpireMM}/${cardInfo.cardExpireYY}` : "00/00"
+  
 
   return (
     <div className="absolute bottom-[-26.2%] left-[5%] size-[75%] text-white ">
